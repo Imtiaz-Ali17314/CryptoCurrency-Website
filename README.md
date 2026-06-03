@@ -1,6 +1,6 @@
 # ApexCrypt OS 🌌
 
-![ApexCrypt OS Dashboard](images/dashboard.png)
+![ApexCrypt OS Dashboard](images/main.png)
 
 **ApexCrypt OS** is a premium, professional-grade cryptocurrency trading terminal built entirely with pure HTML, CSS, and Vanilla JavaScript. It transforms a standard price-tracking website into a high-fidelity, interactive dashboard equipped with real-time market data, advanced charting, and automated trading workflows.
 
