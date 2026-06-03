@@ -3,63 +3,345 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CryptoCurrency Website</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
+    <title>ApexCrypt OS - Professional Trading Terminal</title>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <nav>
-        <img src="images/logo.png" alt="Logo" class="logo" />
-        <ul>
-          <li><a href="#">Market</a></li>
-          <li><a href="#">Features</a></li>
-          <li><a href="#">White Papers</a></li>
-          <li><a href="#">About Us</a></li>
-        </ul>
-        <a href="#" class="btn">EN</a>
-      </nav>
+    <div class="app-container">
+      <!-- Top Navigation Header -->
+      <header>
+        <div class="brand">
+          <img src="images/logo.png" alt="ApexCrypt logo" class="brand-logo" />
+          <h1>ApexCrypt <span>OS</span></h1>
+        </div>
+        
+        <!-- Live Ticker Tape Marquee -->
+        <div class="ticker-tape-container">
+          <div class="ticker-tape" id="tickerTape">
+            <div class="tape-item" data-coin="bitcoin">
+              <span class="tape-symbol">BTC/USD</span>
+              <span class="tape-price" id="tape-btc">Loading...</span>
+            </div>
+            <div class="tape-item" data-coin="ethereum">
+              <span class="tape-symbol">ETH/USD</span>
+              <span class="tape-price" id="tape-eth">Loading...</span>
+            </div>
+            <div class="tape-item" data-coin="dogecoin">
+              <span class="tape-symbol">DOGE/USD</span>
+              <span class="tape-price" id="tape-dog">Loading...</span>
+            </div>
+            <div class="tape-item" data-coin="solana">
+              <span class="tape-symbol">SOL/USD</span>
+              <span class="tape-price" id="tape-sol">Loading...</span>
+            </div>
+            <div class="tape-item" data-coin="binancecoin">
+              <span class="tape-symbol">BNB/USD</span>
+              <span class="tape-price" id="tape-bnb">Loading...</span>
+            </div>
+            <!-- Duplicate for infinite scrolling effect -->
+            <div class="tape-item" data-coin="bitcoin">
+              <span class="tape-symbol">BTC/USD</span>
+              <span class="tape-price" id="tape-btc-dup">Loading...</span>
+            </div>
+            <div class="tape-item" data-coin="ethereum">
+              <span class="tape-symbol">ETH/USD</span>
+              <span class="tape-price" id="tape-eth-dup">Loading...</span>
+            </div>
+            <div class="tape-item" data-coin="dogecoin">
+              <span class="tape-symbol">DOGE/USD</span>
+              <span class="tape-price" id="tape-dog-dup">Loading...</span>
+            </div>
+          </div>
+        </div>
 
-      <div class="content">
-        <h1>BUY & <br />SELL <span>Crypto</span></h1>
-        <p>
-          World's biggest Cryptocurrency exchange available on web <br />
-          as well as mobile phone.
-        </p>
-        <a href="#" class="btn">EXPLORE MORE</a>
+        <div class="header-actions">
+          <div class="system-status">
+            <div class="status-dot"></div>
+            <span>WebSocket Live</span>
+          </div>
+          <button class="btn-terminal" id="cmdTriggerBtn">
+            <i class="fa-solid fa-terminal"></i> Command <span class="shortcut-badge">Ctrl + K</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Dashboard Grid -->
+      <div class="dashboard-grid">
+        
+        <!-- Left Column: Watchlist & Portfolio -->
+        <div class="left-column" style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- Watchlist Card -->
+          <div class="terminal-card watchlist-section">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-list-ul"></i> Market Watchlist</h2>
+              <span class="status-dot" style="background-color: var(--accent-primary); box-shadow: 0 0 6px var(--accent-primary);"></span>
+            </div>
+            <div class="card-body">
+              <div class="search-bar">
+                <input type="text" class="search-input" id="coinSearch" placeholder="Filter by asset name or symbol..." />
+              </div>
+              <div class="watchlist-list" id="watchlistContainer">
+                <!-- BTC -->
+                <div class="coin-row active" data-symbol="BTC" data-coin="bitcoin">
+                  <div class="coin-info">
+                    <img src="images/bitcoin.png" alt="Bitcoin" class="coin-icon" />
+                    <div class="coin-name">
+                      <span>Bitcoin</span>
+                      <span class="coin-symbol">BTC</span>
+                    </div>
+                  </div>
+                  <div class="coin-pricing">
+                    <div class="coin-price" id="row-btc">$0.00</div>
+                    <div class="coin-change" id="change-btc">+0.00%</div>
+                  </div>
+                </div>
+                <!-- ETH -->
+                <div class="coin-row" data-symbol="ETH" data-coin="ethereum">
+                  <div class="coin-info">
+                    <img src="images/ethereum.png" alt="Ethereum" class="coin-icon" />
+                    <div class="coin-name">
+                      <span>Ethereum</span>
+                      <span class="coin-symbol">ETH</span>
+                    </div>
+                  </div>
+                  <div class="coin-pricing">
+                    <div class="coin-price" id="row-eth">$0.00</div>
+                    <div class="coin-change" id="change-eth">+0.00%</div>
+                  </div>
+                </div>
+                <!-- DOGE -->
+                <div class="coin-row" data-symbol="DOGE" data-coin="dogecoin">
+                  <div class="coin-info">
+                    <img src="images/dogecoin.png" alt="Dogecoin" class="coin-icon" />
+                    <div class="coin-name">
+                      <span>Dogecoin</span>
+                      <span class="coin-symbol">DOGE</span>
+                    </div>
+                  </div>
+                  <div class="coin-pricing">
+                    <div class="coin-price" id="row-dog">$0.00</div>
+                    <div class="coin-change" id="change-dog">+0.00%</div>
+                  </div>
+                </div>
+                <!-- SOL -->
+                <div class="coin-row" data-symbol="SOL" data-coin="solana">
+                  <div class="coin-info">
+                    <img src="https://assets.coingecko.com/coins/images/4128/large/solana.png?1640133422" alt="Solana" class="coin-icon" />
+                    <div class="coin-name">
+                      <span>Solana</span>
+                      <span class="coin-symbol">SOL</span>
+                    </div>
+                  </div>
+                  <div class="coin-pricing">
+                    <div class="coin-price" id="row-sol">$0.00</div>
+                    <div class="coin-change" id="change-sol">+0.00%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Portfolio Ledger Card -->
+          <div class="terminal-card portfolio-section">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-wallet"></i> Portfolio Manager</h2>
+            </div>
+            <div class="card-body">
+              <div class="portfolio-summary">
+                <div class="summary-label">Estimated Balance</div>
+                <div class="summary-value" id="portfolioBalance">$0.00</div>
+                <div class="summary-pnl" id="portfolioPnL">
+                  <span>P&L: $0.00 (0.00%)</span>
+                </div>
+              </div>
+              
+              <!-- Ledger Entry Form -->
+              <form class="portfolio-form" id="portfolioForm" onsubmit="return false;">
+                <div class="form-group">
+                  <label for="ledgerAsset">Asset</label>
+                  <select id="ledgerAsset">
+                    <option value="BTC">BTC</option>
+                    <option value="ETH">ETH</option>
+                    <option value="DOGE">DOGE</option>
+                    <option value="SOL">SOL</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="ledgerQty">Holdings</label>
+                  <input type="number" id="ledgerQty" step="any" placeholder="0.00" required />
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                  <label for="ledgerPrice">Avg Purchase Price (USD)</label>
+                  <input type="number" id="ledgerPrice" step="any" placeholder="$0.00" required />
+                </div>
+                <button type="submit" class="btn-submit" id="addPositionBtn">Log Position</button>
+              </form>
+              
+              <!-- Ledger Positions List -->
+              <div class="portfolio-items" id="portfolioItemsContainer">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center Column: Trading Chart & Automations -->
+        <div class="center-column">
+          <!-- TradingView Chart Card -->
+          <div class="terminal-card chart-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-chart-line"></i> Technical Charting</h2>
+              <span class="shortcut-badge" id="chartSymbolIndicator">BINANCE:BTCUSDT</span>
+            </div>
+            <div class="card-body" style="padding: 0; overflow: hidden;">
+              <div class="chart-container" id="chartFrame">
+                <!-- TradingView Embedded Widget -->
+                <div id="tradingview_dashboard" style="height: 100%; width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Automations Rule Builder Card -->
+          <div class="terminal-card rule-builder-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-gears"></i> Workflow Automation</h2>
+            </div>
+            <div class="card-body" style="padding: 12px 16px;">
+              <div class="rule-builder-body">
+                <!-- Left Rule Inputs -->
+                <div class="rule-form">
+                  <div class="rule-inputs">
+                    <div class="form-group" style="flex: 1;">
+                      <label>Asset</label>
+                      <select id="ruleAsset">
+                        <option value="BTC">BTC</option>
+                        <option value="ETH">ETH</option>
+                        <option value="DOGE">DOGE</option>
+                        <option value="SOL">SOL</option>
+                      </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                      <label>Condition</label>
+                      <select id="ruleCondition">
+                        <option value="gt">Price goes above</option>
+                        <option value="lt">Price falls below</option>
+                      </select>
+                    </div>
+                    <div class="form-group" style="flex: 1.2;">
+                      <label>Target Price (USD)</label>
+                      <input type="number" id="ruleTarget" step="any" placeholder="60000" />
+                    </div>
+                  </div>
+                  <div class="rule-inputs">
+                    <div class="form-group" style="flex: 1.5;">
+                      <label>Execution Action</label>
+                      <select id="ruleAction">
+                        <option value="alert">Trigger Alert & Logs</option>
+                        <option value="webhook">Send Webhook to Endpoint</option>
+                        <option value="ai">Alert AI Consultant</option>
+                      </select>
+                    </div>
+                    <button class="btn-submit" id="addRuleBtn" style="margin-top: 15px; flex: 0.8;">Deploy Rule</button>
+                  </div>
+                </div>
+
+                <!-- Right Rule Logs Console -->
+                <div class="rule-log">
+                  <span class="summary-label" style="margin-bottom: 6px;">Trigger Logs Console</span>
+                  <div class="log-console" id="ruleLogsConsole">
+                    <div class="log-entry">[00:00:00] Automation core active. Awaiting trigger event rules...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: AI Assistant & Whale Stream -->
+        <div class="right-column" style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- AI Assistant Card -->
+          <div class="terminal-card ai-assistant-card">
+            <div class="card-header">
+              <h2 class="purple"><i class="fa-solid fa-brain"></i> Apex AI Assistant</h2>
+              <span class="shortcut-badge">V1.0</span>
+            </div>
+            <div class="card-body">
+              <div class="chat-container">
+                <div class="chat-history" id="chatHistory">
+                  <div class="chat-bubble ai">
+                    Hello! I am the Apex AI assistant. I have access to real-time prices and market data feeds. How can I help you analyze the market today?
+                  </div>
+                </div>
+                
+                <!-- Quick Tags -->
+                <div class="preset-prompts">
+                  <span class="preset-chip" data-prompt="analyze BTC">Analyze BTC Trend</span>
+                  <span class="preset-chip" data-prompt="sentiment check">Overall Sentiment</span>
+                  <span class="preset-chip" data-prompt="arbitrage finder">Arbitrage Gaps</span>
+                  <span class="preset-chip" data-prompt="analyze ETH">Evaluate ETH Strength</span>
+                </div>
+
+                <div class="chat-input-area">
+                  <input type="text" class="chat-input" id="chatInput" placeholder="Ask AI: 'Identify arbitrage' or 'Analyze BTC'..." />
+                  <button class="btn-send" id="sendChatBtn"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Whale Alerts Card -->
+          <div class="terminal-card whale-alerts-card">
+            <div class="card-header">
+              <h2 class="orange"><i class="fa-solid fa-tower-broadcast"></i> Whale Alerts Stream</h2>
+            </div>
+            <div class="card-body">
+              <div class="whale-stream" id="whaleAlertStream">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
+    </div>
 
-      <div class="coin-list">
-        <div class="coin">
-          <img src="images/bitcoin.png" alt="BitCoin" />
-          <div>
-            <h3>$<span id="btc"></span></h3>
-            <p>Bitcoin</p>
+    <!-- Keyboard Shortcut / Command Palette Modal -->
+    <div class="cmd-modal" id="cmdModal">
+      <div class="cmd-box">
+        <input type="text" class="cmd-input" id="cmdSearchInput" placeholder="Type a command or search asset..." />
+        <div class="cmd-list" id="cmdOptionsList">
+          <div class="cmd-option" data-action="chart-btc">
+            <span>Open BTC/USDT Candle Chart</span>
+            <span class="cmd-action-key">Enter BTC</span>
           </div>
-        </div>
-
-        <div class="coin">
-          <img src="images/ethereum.png" alt="Ethereum" />
-          <div>
-            <h3>$<span id="eth"></span></h3>
-            <p>Ethereum</p>
+          <div class="cmd-option" data-action="chart-eth">
+            <span>Open ETH/USDT Candle Chart</span>
+            <span class="cmd-action-key">Enter ETH</span>
           </div>
-        </div>
-
-        <div class="coin">
-          <img src="images/dogecoin.png" alt="dogecoin" />
-          <div>
-            <h3>$<span id="dog"></span></h3>
-            <p>Dogecoin</p>
+          <div class="cmd-option" data-action="chart-sol">
+            <span>Open SOL/USDT Candle Chart</span>
+            <span class="cmd-action-key">Enter SOL</span>
+          </div>
+          <div class="cmd-option" data-action="ai-sentiment">
+            <span>Run Market Sentiment Index Analysis</span>
+            <span class="cmd-action-key">Ctrl+S</span>
+          </div>
+          <div class="cmd-option" data-action="ai-arbitrage">
+            <span>Scan Cross-Exchange Arbitrage Price Gaps</span>
+            <span class="cmd-action-key">Ctrl+A</span>
+          </div>
+          <div class="cmd-option" data-action="reset-portfolio">
+            <span>Clear Portfolio Asset Ledger</span>
+            <span class="cmd-action-key">Ctrl+R</span>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Script References -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
